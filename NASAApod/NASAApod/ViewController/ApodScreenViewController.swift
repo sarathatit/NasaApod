@@ -23,6 +23,7 @@ class ApodScreenViewController: UIViewController {
         super.viewDidLoad()
         viewModel = ApodScreenViewModel(service: WebService())
         observeViewModel()
+        setupAlertHandling()
     }
     
     // MARK: - Observer
@@ -36,7 +37,29 @@ class ApodScreenViewController: UIViewController {
     
     // MARK: - UI Update
     func updateUI(with model: ApodModel?) {
-        
+        if !viewModel.isRevisitingToday {
+            
+        } else {
+            
+        }
+    }
+    
+    // MARK: - Alert
+    
+    func setupAlertHandling() {
+        viewModel.showAlertClosure = { [weak self] in
+            self?.showAlert()
+        }
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "No Internet Connection",
+            message: "We are not connected to the internet, showing you the last image we have.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

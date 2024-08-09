@@ -16,10 +16,14 @@ class ApodScreenViewModel: ObservableObject {
     let service: WebService
     var monitor: NWPathMonitor?
     var isConnected: Bool = true
+    var isRevisitingToday = false
+    
+    var showAlertClosure: (() -> Void)?
     
     init(service: WebService) {
         self.service = service
         startNetworkMonitoring()
+        isRevisitingToday = self.checkRevisitingToday()
         getData()
     }
     
@@ -44,6 +48,9 @@ class ApodScreenViewModel: ObservableObject {
                 }
                 .store(in: &self.cancellable)
         } else {
+            if shouldShowAlert() {
+                showAlertClosure?()
+            }
             loadStoredData()
         }
     }
@@ -61,6 +68,20 @@ class ApodScreenViewModel: ObservableObject {
            let lastSeenDate = UserDefaults.standard.object(forKey: "lastSeenDate") as? Date{
             apodModel = try? JSONDecoder().decode(ApodModel.self, from: savedApodData)
         }
+    }
+    
+    private func shouldShowAlert() -> Bool {
+        if let lastSeenDate = UserDefaults.standard.object(forKey: "lastSeenDate") as? Date {
+            return !Calendar.current.isDateInToday(lastSeenDate)
+        }
+        return true
+    }
+    
+    private func checkRevisitingToday() -> Bool {
+        if let lastSeenDate = UserDefaults.standard.object(forKey: "lastSeenDate") as? Date {
+            return Calendar.current.isDateInToday(lastSeenDate)
+        }
+        return false
     }
 }
 
