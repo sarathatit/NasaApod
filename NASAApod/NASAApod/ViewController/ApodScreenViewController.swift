@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ApodScreenViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
