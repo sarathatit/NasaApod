@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class ApodScreenViewController: UIViewController {
 
@@ -15,6 +16,7 @@ class ApodScreenViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var fullImageView: UIImageView!
     
     var viewModel: ApodScreenViewModel!
     
@@ -30,17 +32,28 @@ class ApodScreenViewController: UIViewController {
     func observeViewModel() {
         viewModel.$apodModel
             .sink { [weak self] model in
-                self?.updateUI(with: model)
+                self?.updateUI(with: model, isRevisitingToday: self?.viewModel.isRevisitingToday ?? false)
             }
             .store(in: &viewModel.cancellable)
     }
     
     // MARK: - UI Update
-    func updateUI(with model: ApodModel?) {
-        if !viewModel.isRevisitingToday {
-            
-        } else {
-            
+    func updateUI(with model: ApodModel?, isRevisitingToday: Bool) {
+        if let model = model {
+            if isRevisitingToday {
+                fullImageView.isHidden = false
+                if let urlString = model.url, let url = URL(string: urlString) {
+                    fullImageView.kf.setImage(with: url, placeholder: nil, options: [])
+                }
+            } else {
+                fullImageView.isHidden = true
+                titleLabel.text = model.title ?? ""
+                descriptionLabel.text = model.explanation ?? ""
+                dateLabel.text = model.date ?? ""
+                if let urlString = model.url, let url = URL(string: urlString) {
+                    imageView.kf.setImage(with: url, placeholder: nil, options: [])
+                }
+            }
         }
     }
     

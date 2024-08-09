@@ -22,18 +22,23 @@ class ApodScreenViewModel: ObservableObject {
     
     init(service: WebService) {
         self.service = service
-        startNetworkMonitoring()
-        isRevisitingToday = self.checkRevisitingToday()
-        getData()
+        observeNetworkStatus()
     }
     
-    deinit {
-        stopNetworkMonitoring()
+    private func observeNetworkStatus() {
+        NotificationCenter.default.publisher(for: .networkStatusChanged)
+            .sink { [weak self] notification in
+                if let isConnected = notification.object as? Bool {
+                    self?.getData(isConnected)
+                }
+            }
+            .store(in: &cancellable)
     }
     
     // MARK: - Service Call Methods
-    private func getData() {
+    private func getData(_ isConnected: Bool) {
         if isConnected {
+            isRevisitingToday = self.checkRevisitingToday()
             service.getData()
                 .sink { completion in
                     switch completion {
@@ -65,7 +70,7 @@ class ApodScreenViewModel: ObservableObject {
     
     private func loadStoredData() {
         if let savedApodData = UserDefaults.standard.data(forKey: "cachedApod"),
-           let lastSeenDate = UserDefaults.standard.object(forKey: "lastSeenDate") as? Date{
+           let _ = UserDefaults.standard.object(forKey: "lastSeenDate") as? Date{
             apodModel = try? JSONDecoder().decode(ApodModel.self, from: savedApodData)
         }
     }
@@ -83,28 +88,6 @@ class ApodScreenViewModel: ObservableObject {
         }
         return false
     }
-}
-
-// MARK: - NetWork methods
-
-extension ApodScreenViewModel {
     
-        private func startNetworkMonitoring() {
-            monitor = NWPathMonitor()
-            let queue = DispatchQueue.global(qos: .background)
-            monitor?.start(queue: queue)
-            
-            monitor?.pathUpdateHandler = { [weak self] path in
-                self?.isConnected = path.status == .satisfied
-                if self?.isConnected == false {
-                    DispatchQueue.main.async {
-                        self?.loadStoredData()
-                    }
-                }
-            }
-        }
-        
-        private func stopNetworkMonitoring() {
-            monitor?.cancel()
-        }
 }
+
