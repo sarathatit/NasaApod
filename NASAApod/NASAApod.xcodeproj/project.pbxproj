@@ -16,6 +16,7 @@
 		039C233C2C660CC700A7BBA8 /* ApodScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C233B2C660CC700A7BBA8 /* ApodScreenViewModel.swift */; };
 		039C233F2C660CEA00A7BBA8 /* ApodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C233E2C660CEA00A7BBA8 /* ApodModel.swift */; };
 		039C23412C660D2700A7BBA8 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C23402C660D2700A7BBA8 /* WebService.swift */; };
+		039C23432C660DB500A7BBA8 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C23422C660DB500A7BBA8 /* ServiceError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		039C233B2C660CC700A7BBA8 /* ApodScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApodScreenViewModel.swift; sourceTree = "<group>"; };
 		039C233E2C660CEA00A7BBA8 /* ApodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApodModel.swift; sourceTree = "<group>"; };
 		039C23402C660D2700A7BBA8 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		039C23422C660DB500A7BBA8 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				039C23402C660D2700A7BBA8 /* WebService.swift */,
+				039C23422C660DB500A7BBA8 /* ServiceError.swift */,
 			);
 			path = WebService;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				039C23262C660BEF00A7BBA8 /* ApodScreenViewController.swift in Sources */,
 				039C23222C660BEF00A7BBA8 /* AppDelegate.swift in Sources */,
 				039C233F2C660CEA00A7BBA8 /* ApodModel.swift in Sources */,
+				039C23432C660DB500A7BBA8 /* ServiceError.swift in Sources */,
 				039C23242C660BEF00A7BBA8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
